@@ -1,0 +1,482 @@
+* Encoding: UTF-8.
+*Data Screning and Cleaning.
+
+* '999' added as missing value code to 'Egal2' via Variable View.
+*Run descriptives with minimum and maximum to check for invalid responses on 'Gender' (1 and 2) and all Likert Scale based variables (1 - 7).
+
+ DESCRIPTIVES VARIABLES=AGE GENDER NegEmot1 NegEmot2 NegEmot3 Egal1 Egal2 Egal3 Ind1 Ind2 Ind3 
+    GovSupport1 GovSupport2 GovSupport3
+  /STATISTICS=MEAN STDDEV MIN MAX.
+
+*Run 'Missing Values Analysis' with 'EM' to check for proportion and pattern of missing data. Case Patterns selected to display specific missing cases .
+
+MVA VARIABLES=AGE NegEmot1 NegEmot2 NegEmot3 Egal1 Egal2 Egal3 Ind1 Ind2 Ind3 GovSupport1 
+    GovSupport2 GovSupport3 GENDER
+  /MAXCAT=25
+  /CATEGORICAL=GENDER
+  /MPATTERN
+  /EM(TOLERANCE=0.001 CONVERGENCE=0.0001 ITERATIONS=25).
+
+*Create filter variable (IF function) for identified cases with missing values to filter all cases with missing values (coded as 0) from future analysis i.e. listwise deletion.
+
+USE ALL.
+COMPUTE filter_$=(MissingData  = 1).
+VARIABLE LABELS filter_$ 'MissingData  = 1 (FILTER)'.
+VALUE LABELS filter_$ 0 'Not Selected' 1 'Selected'.
+FORMATS filter_$ (f1.0).
+FILTER BY filter_$.
+EXECUTE.
+
+*Normality Tests performed to examine if z-scores an appropriate method to detect univariate outliers: Kolmogorov-Smirnov, QQ Plots and Skewness/Kurtosis.
+
+EXAMINE VARIABLES=AGE NegEmot1 NegEmot2 NegEmot3 Egal1 Egal2 Egal3 Ind1 Ind2 Ind3 GovSupport1 
+    GovSupport2 GovSupport3
+  /PLOT HISTOGRAM NPPLOT
+  /STATISTICS DESCRIPTIVES
+  /CINTERVAL 95
+  /MISSING LISTWISE
+  /NOTOTAL.
+
+*Z-Score method being used to detect univariate outliers.
+*Data converted to z-scores by saving as standardized scores under 'Descriptives' tab, and compute command used to convert into absolute values.
+
+DESCRIPTIVES VARIABLES=AGE GENDER NegEmot1 NegEmot2 NegEmot3 Egal1 Egal2 Egal3 Ind1 Ind2 Ind3 
+    GovSupport1 GovSupport2 GovSupport3
+  /SAVE
+  
+COMPUTE ZAGE=abs(ZAGE).
+EXECUTE.
+
+COMPUTE ZGENDER=abs(ZGENDER).
+EXECUTE.
+
+COMPUTE ZNegEmot1=abs(ZNegEmot1).
+EXECUTE.
+
+COMPUTE ZNegEmot2=abs(ZNegEmot2).
+EXECUTE.
+
+COMPUTE ZNegEmot3=abs(ZNegEmot3).
+EXECUTE.
+
+COMPUTE ZEgal1=abs(ZEgal1).
+EXECUTE.
+
+COMPUTE ZEgal2=abs(ZEgal2).
+EXECUTE.
+
+COMPUTE ZEgal3=abs(ZEgal3).
+EXECUTE.
+
+COMPUTE ZInd1=abs(ZInd1).
+EXECUTE.
+
+COMPUTE ZInd2=abs(ZInd2).
+EXECUTE.
+
+COMPUTE ZInd3=abs(ZInd3).
+EXECUTE.
+
+COMPUTE ZGovSupport1=abs(ZGovSupport1).
+EXECUTE.
+
+COMPUTE ZGovSupport2=abs(ZGovSupport2).
+EXECUTE.
+
+COMPUTE ZGovSupport3=abs(ZGovSupport3).
+EXECUTE.
+
+*Absolute z-scores recoded so values above 3.29 assigned code of 1, values above 2.58 assigned code of 2, values above 1.96 assigned code of 3 and less than 1.95 assigned code of 4.
+
+RECODE
+ZAGE (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZGENDER (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZNegEmot1 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZNegEmot2 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZNegEmot3 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZEgal1 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZEgal2 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZEgal3 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZInd1 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZInd2 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZInd3 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZGovSupport1 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZGovSupport2 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+RECODE
+ZGovSupport3 (3.29 thru highest =1)(2.58 thru highest = 2)(1.96 thru highest =3)(Lowest thru 1.95 =4).
+EXECUTE.
+
+*Corresponding labels attached to each code defined above.
+
+VALUE LABELS ZAGE ZGENDER ZNegEmot1 ZNegEmot2 ZNegEmot3 ZEgal1 ZEgal2 ZEgal3 ZInd1 ZInd2 ZInd3 ZGovSupport1 ZGovSupport2 ZGovSupport3
+4 'Normal Range' 3 'Potential Outliers' 2 'Probable Outliers' 1 'Extreme'
+
+*Frequency table produced of identified extreme values, probable outliers, potential outliers and values within normal range produced for each variable.
+*To review tables for any extreme values, probable outliers above 1% and potential outliers above 5%.
+
+FREQUENCIES VARIABLES=ZAGE ZGENDER ZNegEmot1 ZNegEmot2 ZNegEmot3 ZEgal1 ZEgal2 ZEgal3 ZInd1 ZInd2 
+    ZInd3 ZGovSupport1 ZGovSupport2 ZGovSupport3
+  /ORDER=ANALYSIS.
+
+*Mahalanobis Distances and probabilities calculated to detect multivariate outliers. 'Num' used as continuous variable of no interest.
+
+REGRESSION
+  /MISSING LISTWISE
+  /CRITERIA=PIN(.05) POUT(.10)
+  /ORIGIN 
+  /DEPENDENT Num
+  /METHOD=ENTER AGE GENDER NegEmot1 NegEmot2 NegEmot3 Egal1 Egal2 Egal3 Ind1 Ind2 Ind3 GovSupport1 
+    GovSupport2 GovSupport3
+  /SAVE MAHAL.
+
+COMPUTE Prob_MD=1-CDF.CHISQ(MAH_1,14).
+EXECUTE.
+
+*Mahalanobis Distance probabilities sorted by descending to identify any values <0.001.
+
+SORT CASES BY MAH_1 (D).
+
+*Data Screen and Clean complete. Decision made to analyse with outliers included. A sensitivity analysis will then be performed with outliers excluded, after primary analysis, to test for robustness of conclusions.
+
+*Composite Measures created for GovSupport(GovSupport1, GovSupport2, GovSupport3), NegEmot(NegEmot1, NegEmot2, NegEmot3), Egal(Egal1, Egal2, Egal3) and Ind(Ind1, Ind2, Ind3)
+
+COMPUTE GovSupport=mean(GovSupport1, GovSupport2, GovSupport3).
+EXECUTE.
+
+COMPUTE NegEmot=mean(NegEmot1, NegEmot2, NegEmot3).
+EXECUTE.
+
+COMPUTE Egal=mean(Egal1, Egal2, Egal3).
+EXECUTE.
+
+COMPUTE Ind=mean(Ind1, Ind2, Ind3).
+EXECUTE.
+
+*Question 1 and 2
+
+*Testing assumptions of single linear regression (GovSupport (DV) and NegEmot (IV)) prior to interpreting model.
+
+*Assumption #1 = Additivity and Linearity - tested by producing scatterplot of GovSupport and NegEmot.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=NegEmot GovSupport MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE
+  /FITLINE TOTAL=YES.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: NegEmot=col(source(s), name("NegEmot"))
+  DATA: GovSupport=col(source(s), name("GovSupport"))
+  GUIDE: axis(dim(1), label("NegEmot"))
+  GUIDE: axis(dim(2), label("GovSupport"))
+  GUIDE: text.title(label("Simple Scatter with Fit Line of GovSupport by NegEmot"))
+  ELEMENT: point(position(NegEmot*GovSupport))
+END GPL.
+
+*Sort cases by Mahalanobis Probability turned off.
+
+SORT CASES BY NUM (A).
+
+*Remaining assumptions tested via performing simple linear regression.
+*Assumption #2 = Independent Errors - tested via running and examining Durbin-Watson test.
+*Assumption #3 = Homoscedasticity - tested via plotting standardised predicted values against standardised residuals and examining plot.
+*Assumption #4 = Normally Distributed Errors - tested via producing examining normal probability plot (P-P plot).
+*Assumption #5 = No Infuential Cases - tested via producing and examining 'Cooks Distance'
+  
+  REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS CI(95) R ANOVA ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT GovSupport
+  /METHOD=ENTER NegEmot
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*Question 3a
+
+*Testing assumptions of multiple linear regression (GovSupport (DV), NegEmot, Egal and Ind (IVs))
+*Assumption #1 = Additivity and Linearity - tested by producing scatterplots for two new predictors being entered into the model (Egal and Ind)
+
+*GovSupport and Egal Scatterplot:
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=Egal GovSupport MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE
+  /FITLINE TOTAL=YES.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: Egal=col(source(s), name("Egal"))
+  DATA: GovSupport=col(source(s), name("GovSupport"))
+  GUIDE: axis(dim(1), label("Egal"))
+  GUIDE: axis(dim(2), label("GovSupport"))
+  GUIDE: text.title(label("Simple Scatter with Fit Line of GovSupport by Egal"))
+  ELEMENT: point(position(Egal*GovSupport))
+END GPL.
+
+*GovSupport and Ind Scatterplot: 
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=Ind GovSupport MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE
+  /FITLINE TOTAL=YES.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: Ind=col(source(s), name("Ind"))
+  DATA: GovSupport=col(source(s), name("GovSupport"))
+  GUIDE: axis(dim(1), label("Ind"))
+  GUIDE: axis(dim(2), label("GovSupport"))
+  GUIDE: text.title(label("Simple Scatter with Fit Line of GovSupport by Ind"))
+  ELEMENT: point(position(Ind*GovSupport))
+END GPL.
+
+*Remaining assumptions tested via performing multiple linear regression.
+*Assumption #2 = Multicollinearity - tested running and examining Collinearity Diagnostics.
+*Assumption #3 = Independent Errors - tested via running and examining Durbin-Watson test.
+*Assumption #4 = Homoscedasticity - tested via plotting standardised predicted values against standardised residuals and examining plot.
+*Assumption #5 = Normally Distributed Errors - tested via producing examining normal probability plot (P-P plot).
+*Assumption #6 = No Infuential Cases - tested via producing and examining 'Cooks Distance'
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS CI(95) R ANOVA COLLIN TOL ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT GovSupport
+  /METHOD=ENTER NegEmot Egal Ind
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*Question 3b
+
+*Testing assumptions of multiple linear regression (GovSupport (DV) NegEmot, Egal, Ind, Age and Gender (IVs))
+
+*Assumption #1 = Additivity and Linearity - tested by producing scatterplots for new continuous predictor being entered into the model (Age)
+*Gender not tested for linearity assumption as it is a binary categorical variable with dummy codes - therefore meets definition of linearity by definition.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=AGE GovSupport MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE
+  /FITLINE TOTAL=YES.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: AGE=col(source(s), name("AGE"))
+  DATA: GovSupport=col(source(s), name("GovSupport"))
+  GUIDE: axis(dim(1), label("AGE"))
+  GUIDE: axis(dim(2), label("GovSupport"))
+  GUIDE: text.title(label("Simple Scatter with Fit Line of GovSupport by AGE"))
+  ELEMENT: point(position(AGE*GovSupport))
+END GPL.
+
+*Remaining assumptions tested via performing multiple linear regression.
+*Assumption #2 = Multicollinearity - tested running and examining Collinearity Diagnostics.
+*Assumption #3 = Independent Errors - tested via running and examining Durbin-Watson test.
+*Assumption #4 = Homoscedasticity - tested via plotting standardised predicted values against standardised residuals and examining plot.
+*Assumption #5 = Normally Distributed Errors - tested via producing examining normal probability plot (P-P plot).
+*Assumption #6 = No Infuential Cases - tested via producing and examining 'Cooks Distance'
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS CI(95) R ANOVA COLLIN TOL ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT GovSupport
+  /METHOD=ENTER NegEmot Egal Ind AGE GENDER
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*Sensitivity Analysis (SA)
+
+*SA being performed to examine the effect of excluding univariate and multivariate outliers, rather than including them. 
+
+*Univariate outlier detection using z-scores during data screening and cleaning revealed NegEmot2', 'Ind1' and 'GovSupport1' had probable outliers above the expected 1% percent
+*'Age', 'NegEmot3' and 'Egal3' also had probable outliers above 1% and extreme values.
+*Filter created to include cases IF coded as 3 (i.e. potential outlier) and 4 (i.e. normal range) for these variables. Thus, excluding cases coded as '1' (i.e. extreme value) and '2' (i.e. probable outlier') 
+*Multivariate outlier detection using Mahalanobis Distances during data screening and cleaning revealed one multivariate outlier ('Num' 182).
+*Multivariate outlier excluded by setting up filter to exclude Mahalanobis Probabilities <0.001.
+
+USE ALL.
+COMPUTE filter_$=(MissingData  = 1 AND ZAGE  >= 3 AND ZNegEmot2  >= 3 AND ZNegEmot3  >= 3 AND 
+    ZEgal3  >= 3 AND ZInd1  >= 3 AND ZGovSupport1  >= 3 AND Prob_MD  >= 0.001).
+VARIABLE LABELS filter_$ 'MissingData  = 1 AND ZAGE  >= 3 AND ZNegEmot2  >= 3 AND ZNegEmot3  >= '+
+    '3 AND ZEgal3  >= 3 AND ZInd1  >= 3 AND ZGovSupport1  >= 3 AND Prob_MD  >= 0.001 (FILTER)'.
+VALUE LABELS filter_$ 0 'Not Selected' 1 'Selected'.
+FORMATS filter_$ (f1.0).
+FILTER BY filter_$.
+EXECUTE.
+
+*Descriptives performed to examine new sample size and means after outliers excluded.
+
+  DESCRIPTIVES VARIABLES=GovSupport NegEmot Egal Ind AGE GENDER
+  /STATISTICS=MEAN STDDEV MIN MAX.
+
+*Question 1 and Question 2: Sensitivity Analysis
+
+*Simple Linear Regression with GovSupport (DV) and NegEmot(IV).
+*Re-checking assumptions.
+*Assumption #1 = Additivity and Linearity - checked via scatterplot.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=NegEmot GovSupport MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE
+  /FITLINE TOTAL=YES.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: NegEmot=col(source(s), name("NegEmot"))
+  DATA: GovSupport=col(source(s), name("GovSupport"))
+  GUIDE: axis(dim(1), label("NegEmot"))
+  GUIDE: axis(dim(2), label("GovSupport"))
+  GUIDE: text.title(label("Simple Scatter with Fit Line of GovSupport by NegEmot"))
+  ELEMENT: point(position(NegEmot*GovSupport))
+END GPL.
+
+*Remaining assumptions checked via performing simple linear regression.
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS CI(95) R ANOVA ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT GovSupport
+  /METHOD=ENTER NegEmot
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*Question 3a: Sensitivity Analysis
+
+*Re-checking assumptions.
+*Assumption #1 = Additivity and Linearity - tested by producing scatterplot for two new IVs being added to regression model ('Egal' and 'Ind')
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=Egal GovSupport MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE
+  /FITLINE TOTAL=YES.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: Egal=col(source(s), name("Egal"))
+  DATA: GovSupport=col(source(s), name("GovSupport"))
+  GUIDE: axis(dim(1), label("Egal"))
+  GUIDE: axis(dim(2), label("GovSupport"))
+  GUIDE: text.title(label("Simple Scatter with Fit Line of GovSupport by Egal"))
+  ELEMENT: point(position(Egal*GovSupport))
+END GPL.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=Ind GovSupport MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE
+  /FITLINE TOTAL=YES.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: Ind=col(source(s), name("Ind"))
+  DATA: GovSupport=col(source(s), name("GovSupport"))
+  GUIDE: axis(dim(1), label("Ind"))
+  GUIDE: axis(dim(2), label("GovSupport"))
+  GUIDE: text.title(label("Simple Scatter with Fit Line of GovSupport by Ind"))
+  ELEMENT: point(position(Ind*GovSupport))
+END GPL.
+
+*Remaining assumptions checked by performing multiple linear regression with GovSupport (DV) and NegEmot, Egal and Ind (IVs)
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS CI(95) R ANOVA ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT GovSupport
+  /METHOD=ENTER NegEmot Egal Ind
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*Question 3b: Sensitivity Analysis
+
+*Rechecking assumptions
+*Assumption #1 = Additivity and Linearity - checked via producing scatterplot for new continuous predictor variable (Age)
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=AGE GovSupport MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE
+  /FITLINE TOTAL=YES.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: AGE=col(source(s), name("AGE"))
+  DATA: GovSupport=col(source(s), name("GovSupport"))
+  GUIDE: axis(dim(1), label("AGE"))
+  GUIDE: axis(dim(2), label("GovSupport"))
+  GUIDE: text.title(label("Simple Scatter with Fit Line of GovSupport by AGE"))
+  ELEMENT: point(position(AGE*GovSupport))
+END GPL.
+
+*Remaining assumptions checked by performing multiple linear regression with GovSupport (DV) and NegEmot, Egal, Ind, Age and Gender (IVs)
+
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS CI(95) R ANOVA ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT GovSupport
+  /METHOD=ENTER NegEmot Egal Ind AGE GENDER
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*End of Syntax 
+
+
+
+
+
