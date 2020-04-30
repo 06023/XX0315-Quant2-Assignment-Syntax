@@ -1,0 +1,341 @@
+* Encoding: UTF-8.
+
+*Descriptives Statistics run to check minimum and maximum on all variable values, screening for data entry errors (e.g. above 7 on Likert Scale).
+
+DATASET ACTIVATE DataSet1.
+DESCRIPTIVES VARIABLES=Age Gender AutSup1 AutSup2 AutSup3 IM1 IM2 IM3 Energy1 Energy2 Energy3
+  /STATISTICS=MEAN STDDEV MIN MAX.
+
+*Missing Values Analysis performed to examine pattern and percentage of missing data.
+
+MVA VARIABLES=Age AutSup1 AutSup2 AutSup3 IM1 IM2 IM3 Energy1 Energy2 Energy3 Gender
+  /MAXCAT=25
+  /CATEGORICAL=Gender
+  /MPATTERN
+  /EM(TOLERANCE=0.001 CONVERGENCE=0.0001 ITERATIONS=25).
+
+*Normality of data examined to check if z-score method appropriate - Kolmogorov-Smirnov, QQ Plots, HIsotograms and Skewness/Kurtosis.
+
+EXAMINE VARIABLES = Age Gender AutSup1 AutSup2 AutSup3 IM1 IM2 IM3 Energy1 Energy2 Energy3
+  /PLOT HISTOGRAM NPPLOT
+  /STATISTICS DESCRIPTIVES
+  /CINTERVAL 95
+  /MISSING LISTWISE
+  /NOTOTAL.
+
+*Boxplots produced for each variable to detect univariate outliers.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=AutSup1 MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: AutSup1=col(source(s), name("AutSup1"))
+  DATA: id=col(source(s), name("$CASENUM"), unit.category())
+  COORD: rect(dim(1), transpose())
+  GUIDE: axis(dim(1), label("AutSup1"))
+  GUIDE: text.title(label("1-D Boxplot of AutSup1"))
+  ELEMENT: schema(position(bin.quantile.letter(AutSup1)), label(id))
+END GPL.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=AutSup2 MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: AutSup2=col(source(s), name("AutSup2"))
+  DATA: id=col(source(s), name("$CASENUM"), unit.category())
+  COORD: rect(dim(1), transpose())
+  GUIDE: axis(dim(1), label("AutSup2"))
+  GUIDE: text.title(label("1-D Boxplot of AutSup2"))
+  ELEMENT: schema(position(bin.quantile.letter(AutSup2)), label(id))
+END GPL.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=AutSup3 MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: AutSup3=col(source(s), name("AutSup3"))
+  DATA: id=col(source(s), name("$CASENUM"), unit.category())
+  COORD: rect(dim(1), transpose())
+  GUIDE: axis(dim(1), label("AutSup3"))
+  GUIDE: text.title(label("1-D Boxplot of AutSup3"))
+  ELEMENT: schema(position(bin.quantile.letter(AutSup3)), label(id))
+END GPL.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=IM1 MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: IM1=col(source(s), name("IM1"))
+  DATA: id=col(source(s), name("$CASENUM"), unit.category())
+  COORD: rect(dim(1), transpose())
+  GUIDE: axis(dim(1), label("IM1"))
+  GUIDE: text.title(label("1-D Boxplot of IM1"))
+  ELEMENT: schema(position(bin.quantile.letter(IM1)), label(id))
+END GPL.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=IM2 MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: IM2=col(source(s), name("IM2"))
+  DATA: id=col(source(s), name("$CASENUM"), unit.category())
+  COORD: rect(dim(1), transpose())
+  GUIDE: axis(dim(1), label("IM2"))
+  GUIDE: text.title(label("1-D Boxplot of IM2"))
+  ELEMENT: schema(position(bin.quantile.letter(IM2)), label(id))
+END GPL.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=IM3 MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: IM3=col(source(s), name("IM3"))
+  DATA: id=col(source(s), name("$CASENUM"), unit.category())
+  COORD: rect(dim(1), transpose())
+  GUIDE: axis(dim(1), label("IM3"))
+  GUIDE: text.title(label("1-D Boxplot of IM3"))
+  ELEMENT: schema(position(bin.quantile.letter(IM3)), label(id))
+END GPL.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=Energy1 MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: Energy1=col(source(s), name("Energy1"))
+  DATA: id=col(source(s), name("$CASENUM"), unit.category())
+  COORD: rect(dim(1), transpose())
+  GUIDE: axis(dim(1), label("Energy1"))
+  GUIDE: text.title(label("1-D Boxplot of Energy1"))
+  ELEMENT: schema(position(bin.quantile.letter(Energy1)), label(id))
+END GPL.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=Energy2 MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: Energy2=col(source(s), name("Energy2"))
+  DATA: id=col(source(s), name("$CASENUM"), unit.category())
+  COORD: rect(dim(1), transpose())
+  GUIDE: axis(dim(1), label("Energy2"))
+  GUIDE: text.title(label("1-D Boxplot of Energy2"))
+  ELEMENT: schema(position(bin.quantile.letter(Energy2)), label(id))
+END GPL.
+
+* Chart Builder.
+GGRAPH
+  /GRAPHDATASET NAME="graphdataset" VARIABLES=Energy3 MISSING=LISTWISE REPORTMISSING=NO
+  /GRAPHSPEC SOURCE=INLINE.
+BEGIN GPL
+  SOURCE: s=userSource(id("graphdataset"))
+  DATA: Energy3=col(source(s), name("Energy3"))
+  DATA: id=col(source(s), name("$CASENUM"), unit.category())
+  COORD: rect(dim(1), transpose())
+  GUIDE: axis(dim(1), label("Energy3"))
+  GUIDE: text.title(label("1-D Boxplot of Energy3"))
+  ELEMENT: schema(position(bin.quantile.letter(Energy3)), label(id))
+END GPL.
+
+*Running Mahalanobis Distances to detect multivariate outliers.
+
+REGRESSION
+  /MISSING LISTWISE
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT Num
+  /METHOD=ENTER Age AutSup1 AutSup2 AutSup3 IM1 IM2 IM3 Energy1 Energy2 Energy3
+  /SAVE MAHAL.
+
+COMPUTE Prob_MD=1-CDF.CHISQ(MAH_1,10).
+EXECUTE.
+
+*No multivarate outliers identified (i.e. no values <.001)
+
+*Decision made to run analysis with and without extreme outliers (i.e. sensitivity analysis).
+
+*Missing data handled via Expectation-Maximization Imputation.
+
+DATASET ACTIVATE DataSet1.
+DATASET DECLARE  EM_imputed.
+MVA VARIABLES=AutSup1 AutSup2 AutSup3 IM1 IM2 IM3 Energy1 Energy2 Energy3 
+  /EM(TOLERANCE=0.001 CONVERGENCE=0.0001 ITERATIONS=25 OUTFILE=EM_imputed).
+
+*Creating composite means from EM imputed data-set.
+
+DATASET ACTIVATE EM_imputed.
+COMPUTE AutSup=mean(AutSup1, AutSup2, AutSup3).
+EXECUTE.
+
+COMPUTE IntMot=mean(IM1, IM2, IM3).
+EXECUTE.
+
+COMPUTE Energy=mean(Energy1, Energy2, Energy3).
+EXECUTE.
+
+*Running descriptives and normality to review for imputed and composite variables.
+
+DESCRIPTIVES VARIABLES=AutSup IntMot Energy
+  /STATISTICS=MEAN STDDEV MIN MAX SEMEAN KURTOSIS SKEWNESS.
+
+EXAMINE VARIABLES=AutSup IntMot Energy
+  /PLOT HISTOGRAM NPPLOT
+  /STATISTICS DESCRIPTIVES
+  /CINTERVAL 95
+  /MISSING LISTWISE
+  /NOTOTAL.
+
+*Running assumption checks for 3 simple linear regressions (AutSup IV, Energy DV), (AutSup IV, IntMotDV), (IntMot IV, Energy DV) and multiple linear regression (AutSup +IntMot IVs, Energy DV).
+
+*X predicting Y
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS R ANOVA COLLIN TOL
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT Energy
+  /METHOD=ENTER AutSup
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*M predicting Y
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS R ANOVA COLLIN TOL
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT Energy
+  /METHOD=ENTER IntMot
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*X predicting M
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS R ANOVA COLLIN TOL
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT IntMot
+  /METHOD=ENTER AutSup
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*X and M predicting Y
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS R ANOVA COLLIN TOL
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT Energy
+  /METHOD=ENTER AutSup IntMot
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+*Mediation Analysis performed using PROCESS to determine if  X (AutSup) causally determines Y(Energy) through the intervening influence of M(IntMot).
+
+process y=Energy /x=AutSup /m=IntMot/model=4/effsize=1 /total =1 /stand =1 /boot = 5000 /seed=20200427
+
+*Running sensitivity analysis to analyse effect of including extreme outliers in primary analysis.
+
+*Boxplots indicated the following case numbers as extreme outliers on Energy2 only (48, 69, 95, 126, 138).
+*These values were manually set to missing for these cases using the 'Edit' 'Go To Case' point and click.
+
+*Data re-imputed using EM. 
+
+DATASET DECLARE  Outlier_EMImputed.
+MVA VARIABLES=AutSup1 AutSup2 AutSup3 IM1 IM2 IM3 Energy1 Outlier_Energy2 Energy3 
+  /EM(TOLERANCE=0.001 CONVERGENCE=0.0001 ITERATIONS=25 OUTFILE=Outlier_EMImputed).
+
+DATASET ACTIVATE Outlier_EMImputed.
+COMPUTE AutSup=mean(AutSup1, AutSup2, AutSup3).
+EXECUTE.
+
+COMPUTE IntMot=mean(IM1, IM2, IM3).
+EXECUTE.
+
+COMPUTE Outlier_Energy=mean(Energy1, Outlier_Energy2, Energy3).
+EXECUTE.
+
+
+*Regression assumptions re-checked using series of simple and multiple regressions:
+
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS R ANOVA COLLIN TOL ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT Outlier_Energy
+  /METHOD=ENTER AutSup
+  /SCATTERPLOT=(*DRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS R ANOVA COLLIN TOL ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT Outlier_Energy
+  /METHOD=ENTER IntMot
+  /SCATTERPLOT=(*DRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS R ANOVA COLLIN TOL ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT Outlier_Energy
+  /METHOD=ENTER IntMot AutSup
+  /SCATTERPLOT=(*DRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+REGRESSION
+  /DESCRIPTIVES MEAN STDDEV CORR SIG N
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS R ANOVA COLLIN TOL ZPP
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT IntMot
+  /METHOD=ENTER AutSup
+  /SCATTERPLOT=(*DRESID ,*ZPRED)
+  /RESIDUALS DURBIN NORMPROB(ZRESID)
+  /SAVE COOK.
+
+
+*No assumption violations indicated.
+*Mediation analysis re-run using new Outlier_Energy composite variable:
+
+process y=Outlier_Energy /x=AutSup /m=IntMot/model=4/effsize=1 /total =1 /stand =1 /boot = 5000 /seed=20200427
